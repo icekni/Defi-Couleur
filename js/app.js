@@ -124,18 +124,24 @@ const app = {
     // Selon https://fr.wikipedia.org/wiki/Teinte_saturation_luminosit%C3%A9#Depuis_RVB_2
     // Je doit d'abord trouver la valeur max entre le rouge, le vert et le bleu, et faire pareil avec la valeur min
     // Mon resultat de toRGB() etant un tableau, je dois utiliser l'operateur spread "..." pour fournir a Math.max et Math.min
-    const max = Math.max(...app.toRGB(colorCode));
-    const min = Math.min(...app.toRGB(colorCode));
+    // Les valeurs RGB vont de 0 à 255, alors que pour calculer le HSL, je dois utiliser des valeurs de 0 à 1, donc je divise le tout par 255
+    const max = Math.max(...app.toRGB(colorCode)) / 255;
+    const min = Math.min(...app.toRGB(colorCode)) / 255;
 
     // Puis via la formule fournie, je calcule la saturation
-    const luminosity = 0.5 * (max + min);
-    const cValue = max - min;
-    const saturation = cValue / (1 - (2 * luminosity - 1));
+    const luminosity = (max + min) / 2;
+    const chroma = max - min;
+    let saturation = chroma / (1 - Math.abs((2 * luminosity) - 1));
+
+    // Si la chroma est = 0, alors la saturation sera 0
+    if (chroma === 0) {
+        saturation = 0;
+    }
 
     // saturation est un nombre negatif compris entre -1 et 0 et represente le taux de "non gris"
     // Moi je veux l'inverse, le taux de gris, donc c'est ce qui reste de la soustraction de 1 - saturation
     // Et vu qu'on veut un taux, en pourcent c'est mieux, donc je multiplie par 100 et je rajoute "%" a la fin
-    return Math.round((1 + saturation) * 100) + '%';
+    return (1 - saturation) * 100 + '%';
   }
 }
 
