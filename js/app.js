@@ -14,6 +14,16 @@ const app = {
     // Je dois recuperer la valeur de l'input
     const color = e.currentTarget.querySelector('input').value;
 
+    // On commence par verifier :
+    // Si la chaine de caracteres commence bien par #
+    // Et si elle a, soit 4 carateres, soit 7 (en incluant le #)
+    if (!color.startsWith('#') || (color.length !== 4 && color.length !== 7)) {
+      // Si ce n'est pas le cas, alors on envoie un message d'erreur et on arrete la fonction
+      alert('Code couleur invalide');
+      // Et on arrete la fonction
+      return;
+    }
+
     // Puis je peux convertir en RGB, trouver la/les couleur(s) dominante(s) et le taux de gris
     const rgbElement = document.createElement('p');
     // Je lui donne son textContent
@@ -42,16 +52,6 @@ const app = {
    * @param {string} colorCode Code couleur HTML commencant par #
    */
   toRGB: function(colorCode) {
-    // On commence par verifier :
-    // Si la chaine de carateres commence bien par #
-    // Et si elle a, soit 4 carateres, soit 7 (en incluant le #)
-    if (!colorCode.startsWith('#') || (colorCode.length !== 4 && colorCode.length !== 7)) {
-      // Si ce n'est pas le cas, alors on envoie un message d'erreur et on arrete la fonction
-      alert('Code couleur invalide');
-      // Et on arrete la fonction
-      return;
-    }
-
     // Conversion en INT des valeurs hexa :
     // Si on a un code couleur raccourci, comme #f0f ca veut dire qu'on a en fait #ff00ff, donc je dois doubler le caractere pour obtenir le vrai code hexa
     const redHex = colorCode.length === 4 ? colorCode.slice(1, 2) + colorCode.slice(1, 2) : colorCode.slice(1, 3);
