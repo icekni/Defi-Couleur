@@ -141,7 +141,8 @@ const app = {
     // saturation est un nombre negatif compris entre -1 et 0 et represente le taux de "non gris"
     // Moi je veux l'inverse, le taux de gris, donc c'est ce qui reste de la soustraction de 1 - saturation
     // Et vu qu'on veut un taux, en pourcent c'est mieux, donc je multiplie par 100 et je rajoute "%" a la fin
-    return (1 - saturation) * 100 + '%';
+    // Et j'arrondi pour pas avoir 30 chiffres apres la virgule
+    return Math.round((1 - saturation) * 100) + '%';
   }
 }
 
